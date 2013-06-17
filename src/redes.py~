@@ -1,0 +1,28 @@
+#!/usr/bin/python
+#Apartado de redes , funciones relativas a la configuracion de networking
+#import netifaces
+import ssh_cliente
+
+class Interfaces():
+	#Obtemnemos solo las interfaces disponibles
+	#def obtenerdatos(self):
+	#	interf=[]
+	#	for i in netifaces.interfaces():
+	#		interf.append(i)
+	#	return interf
+	#Obtenemos interzaz + ip via netifaces 
+	#def obtenerdatoscompuestos(self):
+	#	listinterfaz={}
+	#	for b in netifaces.interfaces():
+	#		listinterfaz[''+b+''] = ''+netifaces.ifaddresses(''+b+'')[2][0]['addr']+','+netifaces.ifaddresses(''+b+'')[2][0]['netmask']+''
+	#	return listinterfaz
+
+	#Obtenemos Interfaces disponibles en el equipo remoto
+	def obtenerinterfaces(self):
+		interf=[]
+		for i in ssh_cliente.comando('ifconfig |grep Link |grep -e ^[A-Za-z] |cut -d " " -f 1'): 
+			interf.append(i.rstrip())
+		return interf
+
+	def obteneraddripv4(self):
+		
