@@ -26,6 +26,7 @@ import redes
 UI_FILE = "src/sra.ui"
 #UI_FILE = "/usr/local/share/sra/ui/sra.ui"
 
+
 class GUI:
 	def __init__(self):
 
@@ -33,6 +34,14 @@ class GUI:
 		self.builder.add_from_file(UI_FILE)
 		self.builder.connect_signals(self)
 		window = self.builder.get_object('window1')
+		store=self.builder.get_object('treestore1')
+		#print str(store)
+		padre=store.append(None, ["Interfaz Red"])
+		store.append(padre, ["IP"])
+		store.append(padre, ["Sincronizacion"])
+		dos=store.append(None,["Otra"])
+		store.append(dos, ["Sincronizacion"])
+		#store.append(["TheA"])
 		window.show_all()
 		
 	#Conectamos al host
@@ -59,13 +68,13 @@ class GUI:
 
 	#Detectamos las opciones seleccionadas y actuamos en consecuencia ;)
 	def selector(self,treeView):
-		valor=self.builder.get_object('treeview1')
+		valor=self.builder.get_object('treestore1')
 		listStore, lIter = valor.get_selection().get_selected()
 		seleccion = str(listStore.get(lIter,0)[0])
 		pesta = self.builder.get_object('notebook2')
 		if seleccion == 'Interfaces Red':
-			pesta.set_current_page(0)
 			print str(seleccion)
+			pesta.set_current_page(0)
 			self.agregar(self)
 		else:
 			print str(seleccion)

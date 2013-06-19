@@ -20,11 +20,12 @@ from gi.repository import Gtk, GdkPixbuf, Gdk
 import os, sys
 import ssh_cliente
 import redes
-
+###################################################################
 #Comment the first line and uncomment the second before installing
 #or making the tarball (alternatively, use project variables)
 UI_FILE = "src/sra.ui"
 #UI_FILE = "/usr/local/share/sra/ui/sra.ui"
+
 
 class GUI:
 	def __init__(self):
@@ -33,6 +34,14 @@ class GUI:
 		self.builder.add_from_file(UI_FILE)
 		self.builder.connect_signals(self)
 		window = self.builder.get_object('window1')
+		store=self.builder.get_object('treestore1')
+		#print str(store)
+		padre=store.append(None, ["Interfaz Red"])
+		store.append(padre, ["IP"])
+		store.append(padre, ["Sincronizacion"])
+		dos=store.append(None,["Otra"])
+		store.append(dos, ["Sincronizacion"])
+		#store.append(["TheA"])
 		window.show_all()
 		
 	#Conectamos al host
@@ -59,7 +68,7 @@ class GUI:
 
 	#Detectamos las opciones seleccionadas y actuamos en consecuencia ;)
 	def selector(self,treeView):
-		valor=self.builder.get_object('treeview1')
+		valor=self.builder.get_object('treeview4')
 		listStore, lIter = valor.get_selection().get_selected()
 		seleccion = str(listStore.get(lIter,0)[0])
 		pesta = self.builder.get_object('notebook2')
