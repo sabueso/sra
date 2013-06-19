@@ -9,7 +9,8 @@ ui_DATA = sra.ui
 ## The main script
 bin_SCRIPTS = sra.py \
 	ssh_cliente.py \
-	redes.py
+	redes.py \
+	performance.py
 
 ## Directory where .class files will be installed
 sradir = $(pythondir)/sra

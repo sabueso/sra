@@ -17,9 +17,9 @@
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from gi.repository import Gtk, GdkPixbuf, Gdk
-import os, sys
-import ssh_cliente
-import redes
+import os, sys,subprocess
+import ssh_cliente,performance,redes
+import threading
 ###################################################################
 #Comment the first line and uncomment the second before installing
 #or making the tarball (alternatively, use project variables)
@@ -36,12 +36,11 @@ class GUI:
 		window = self.builder.get_object('window1')
 		store=self.builder.get_object('treestore1')
 		#print str(store)
-		padre=store.append(None, ["Interfaz Red"])
+		padre=store.append(None, ["Interfaces"])
 		store.append(padre, ["IP"])
-		store.append(padre, ["Sincronizacion"])
+		store.append(padre, ["Negociacion"])
 		dos=store.append(None,["Otra"])
 		store.append(dos, ["Sincronizacion"])
-		#store.append(["TheA"])
 		window.show_all()
 		
 	#Conectamos al host
@@ -50,11 +49,15 @@ class GUI:
 		ent_usuario = self.builder.get_object('entry2').get_text()
 		ent_password = self.builder.get_object('entry3').get_text()
 		status = self.builder.get_object('statusbar1')
-		a = ssh_cliente.Lanzadera(ent_ip,ent_usuario,ent_password)	
-		#status.push(1,"Conectando a"+str(ent_ip)+"")
+		a = ssh_cliente.Lanzadera(ent_ip,ent_usuario,ent_password)
 		a.conectar()
+		#Mostramos el estado de la conexion
 		status.push(1,""+str(a.conectar())+"")
-		#Devolvemos por pantalla el estado de conexion
+		#if a.conectar == False:
+			#status2 = self.builder.get_object('statusbar2')
+		coma="prueba"
+		#performance.comandociclo(coma)
+		performance.ejecucion()
 		print a.conectar()
 		
 	#Funcion por la que mostramos en el liststore los datos de las interfaces de red
@@ -72,7 +75,7 @@ class GUI:
 		listStore, lIter = valor.get_selection().get_selected()
 		seleccion = str(listStore.get(lIter,0)[0])
 		pesta = self.builder.get_object('notebook2')
-		if seleccion == 'Interfaces Red':
+		if seleccion == 'IP':
 			print str(seleccion)
 			pesta.set_current_page(0)
 			self.agregar(self)
