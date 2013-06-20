@@ -16,9 +16,10 @@
 # You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import Gtk, GdkPixbuf, Gdk
+from gi.repository import Gtk, GdkPixbuf, Gdk, GLib
 import os, sys,subprocess
-import ssh_cliente,performance,redes
+import ssh_cliente,redes
+#import performance
 import threading
 ###################################################################
 #Comment the first line and uncomment the second before installing
@@ -41,8 +42,10 @@ class GUI:
 		store.append(padre, ["Negociacion"])
 		dos=store.append(None,["Otra"])
 		store.append(dos, ["Sincronizacion"])
+		Gdk.threads_init()
+		#threading.Thread(target=self.comandociclo).start()
 		window.show_all()
-		
+
 	#Conectamos al host
 	def conectarhost(self,button):
 		ent_ip = self.builder.get_object('entry1').get_text()
@@ -53,11 +56,20 @@ class GUI:
 		a.conectar()
 		#Mostramos el estado de la conexion
 		status.push(1,""+str(a.conectar())+"")
-		#if a.conectar == False:
-			#status2 = self.builder.get_object('statusbar2')
-		coma="prueba"
-		performance.comandociclo(coma)
+		#Sacamos via stdout el estado
 		print a.conectar()
+		#execuptime=ssh_cliente.comando("uptime")
+		#Enviamos el comando a ejecutar por la tarea ciclica
+		self.uptimestate()
+		status2 = self.builder.get_object('statusbar2')
+
+	def uptimestate(self):
+		#commands.getstatusoutput("uptime")
+		#print "hola"
+		status2 = self.builder.get_object('statusbar2')
+		status2.push(1,""+str(ssh_cliente.comando('uptime')).rstrip('\[\]\r\n\'')+"")
+		threading.Timer(3,self.uptimestate).start()
+
 		
 	#Funcion por la que mostramos en el liststore los datos de las interfaces de red
 	def agregar(self,store):
@@ -93,12 +105,15 @@ class GUI:
 	def destroy(window, self):
 		ssh_cliente.desconectar()
 		Gtk.main_quit()
-
 		
 
 def main():
+	GLib.threads_init()
+	Gdk.threads_init()
+	Gdk.threads_enter()
 	app = GUI()
 	Gtk.main()
-		
-if __name__ == "__main__":
-    sys.exit(main())
+	Gdk.threads_leave()
+
+if __name__ == "__main__":	
+	sys.exit(main())
