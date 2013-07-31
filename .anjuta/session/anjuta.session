@@ -3,13 +3,13 @@ Maximized=1
 Geometry=1920x1021+0+27
 
 [File Loader]
-Files=../../src/redes.py#14%%%../../src/sra.py#77%%%../../src/sra.ui
+Files=../../src/redes.py#14%%%../../src/sra.py#71%%%../../src/ssh_cliente.py#45%%%../../src/sra.ui
 
 [Document Manager]
 bookmarks=<?xml version="1.0" encoding="UTF-8"?>\n<bookmarks/>\n
 
 [Project Manager]
-Expand=sra%%%sra//src%%%sra//src//sra
+Expand=sra%%%sra//src%%%sra//src//bin%%%sra//src//sra
 
 [Execution]
 Program uri=../../src/sra.py

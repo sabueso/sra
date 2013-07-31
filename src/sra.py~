@@ -21,11 +21,11 @@ import os, sys,subprocess
 import ssh_cliente,redes
 #import performance
 import threading
+
 ###################################################################
 #Comment the first line and uncomment the second before installing
 #or making the tarball (alternatively, use project variables)
 UI_FILE = "src/sra.ui"
-#UI_FILE = "/usr/local/share/sra/ui/sra.ui"
 
 
 class GUI:
@@ -42,7 +42,7 @@ class GUI:
 		store.append(padre, ["Negociacion"])
 		dos=store.append(None,["Otra"])
 		store.append(dos, ["Sincronizacion"])
-		Gdk.threads_init()
+		#Gdk.threads_init()
 		#threading.Thread(target=self.comandociclo).start()
 		window.show_all()
 
@@ -67,18 +67,19 @@ class GUI:
 		#commands.getstatusoutput("uptime")
 		#print "hola"
 		status2 = self.builder.get_object('statusbar2')
-		status2.push(1,""+str(ssh_cliente.comando('uptime')).rstrip('\[\]\r\n\'')+"")
+		status2.push(1,""+str(ssh_cliente.comando('uptime')).rstrip("\n")+"")
 		threading.Timer(3,self.uptimestate).start()
 
 		
 	#Funcion por la que mostramos en el liststore los datos de las interfaces de red
-	def agregar(self,store):
+	def infointerfaces(self,store):
 		lista=self.builder.get_object('liststore2')
+		#Limpiamos antiguos valores cargados en el liststore
+		lista.clear()
+		#Recogemos los valores de la funcion Interfaces
 		test=redes.Interfaces()
-		for i in test.obtenerinterfaces():
-			 #lista.append([''+str(i)+'',''+test.obtenerdatoscompuestos()[i]+''])
-		#for i in ssh_cliente.comando('ifconfig |grep Link |grep -e ^[A-Za-z] |cut -d \" \" -f 1'):
-			 lista.append([''+str(i)+'',''+str(i)+''])
+		for a,b in test.obtenerinterfaces().iteritems():
+			lista.append([''+str(a)+'',''+str(b[0].strip('\n'))+'',''+str(b[1].strip('\n'))+''])
 
 	#Detectamos las opciones seleccionadas y actuamos en consecuencia ;)
 	def selector(self,treeView):
@@ -89,7 +90,7 @@ class GUI:
 		if seleccion == 'IP':
 			print str(seleccion)
 			pesta.set_current_page(0)
-			self.agregar(self)
+			self.infointerfaces(self)
 		else:
 			print str(seleccion)
 			pesta.set_current_page(1)
@@ -113,7 +114,7 @@ def main():
 	Gdk.threads_enter()
 	app = GUI()
 	Gtk.main()
-	Gdk.threads_leave()
+	#Gdk.threads_leave()
 
 if __name__ == "__main__":	
 	sys.exit(main())

@@ -5,7 +5,6 @@ import paramiko,os
 global conexion
 global canal
 
-
 # Conectamos al servidor
 class Lanzadera(object):
 
@@ -43,6 +42,8 @@ def comando(com):
 		# Si se ha producido algun error lo mostramos
 		print canal.makefile_stderr('rb', -1).readlines()
 	canal = conexion.open_session()
+	#Si se tranforma str la variable salida, en el caso de la ejecucion de comandos 
+	#no se visualizan correctamente
 	return salida
 
 #Funcion de desconexion
