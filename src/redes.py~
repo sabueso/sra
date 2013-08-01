@@ -12,9 +12,10 @@ class Interfaces():
 		for tjtred in tjtdisponibles:
 			ip=ssh_cliente.comando("ifconfig "+str(tjtred).rstrip('\n')+" | grep -Eo \'inet (addr:)?([0-9]*\.){3}[0-9]*\' | grep -Eo \'([0-9]*\.){3}[0-9]*\'")
 			mascara=ssh_cliente.comando("ifconfig "+str(tjtred).rstrip('\n')+" | grep -Eo \'Mask:?([0-9]*\.){3}[0-9]*\' | grep -Eo \'([0-9]*\.){3}[0-9]*\'")
-			#interf.append(i.rstrip()).append(ip)
+			tipo=ssh_cliente.comando("ifconfig "+str(tjtred).rstrip('\n')+" | grep -Eo \'encap:?([a-z]*\:[a-zA-Z]*)*\'|grep -Eo \'([A-Z][a-z]*)\'")
 			interf[""+str(tjtred).rstrip('\n')+""] = [""+str(ip).rstrip('\n')+""]
 			interf[""+str(tjtred).rstrip('\n')+""].append(""+str(mascara).rstrip('\n')+"")
+			interf[""+str(tjtred).rstrip('\n')+""].append(""+str(tipo).strip('\[]\'n')+"")
 		print "----------**********************DEBUG********************************---------------"
 		print interf
 		print "----------***********************************************************---------------"
@@ -22,4 +23,3 @@ class Interfaces():
 
 	def obteneraddripv4(self):
 		return
-		

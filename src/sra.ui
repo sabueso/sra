@@ -35,6 +35,8 @@
       <column type="gchararray"/>
       <!-- column-name Mascara -->
       <column type="gchararray"/>
+      <!-- column-name Tipo -->
+      <column type="gchararray"/>
     </columns>
   </object>
   <object class="GtkListStore" id="liststore3"/>
@@ -313,6 +315,17 @@
                               <object class="GtkCellRendererText" id="cellrenderertext3"/>
                               <attributes>
                                 <attribute name="text">2</attribute>
+                              </attributes>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn" id="treeviewcolumn5">
+                            <property name="title" translatable="yes">Tipo</property>
+                            <child>
+                              <object class="GtkCellRendererText" id="cellrenderertext5"/>
+                              <attributes>
+                                <attribute name="text">3</attribute>
                               </attributes>
                             </child>
                           </object>

@@ -80,7 +80,7 @@ class GUI:
 		test=redes.Interfaces()
 		for a,b in test.obtenerinterfaces().iteritems():
 			#Falta eliminar caracters de nueva liena, corchetes...
-			lista.append([''+str(a)+'',''+str(b[0].strip('\n'))+'',''+str(b[1].strip('\n'))+''])
+			lista.append([''+str(a)+'',''+str(b[0].strip('\n'))+'',''+str(b[1].strip('\n'))+'',''+str(b[2].strip('\n'))+''])
 
 	#Detectamos las opciones seleccionadas y actuamos en consecuencia ;)
 	def selector(self,treeView):
